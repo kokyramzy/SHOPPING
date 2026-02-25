@@ -95,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) return 'invalid email';
+                    if(!value.contains('@gmail.com')) return '@gmail.com';
                     return null;
                   },
                   controller: email,
@@ -109,7 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Password + eye
                 TextFormField(
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'invalid email';
+                    if (value == null || value.isEmpty) return 'invalid pass';
+                    if(value.length<7)return 'very short';
                     return null;
                   },
                   controller: pass,

@@ -65,7 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
             
 TextFormField(
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'invalid email';
+                    if (value == null || value.isEmpty) return 'invalid name';
                     return null;
                   },                  controller: name,
                   textCapitalization: TextCapitalization.words,
@@ -79,6 +79,7 @@ TextFormField(
 TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) return 'invalid email';
+                     if(!value.contains('@gmail.com')) return '@gmail.com';
                     return null;
                   },                  controller: email,
                   keyboardType: TextInputType.emailAddress,
@@ -91,7 +92,8 @@ TextFormField(
             
 TextFormField(
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'invalid email';
+                    if (value == null || value.isEmpty) return 'invalid pass';
+                    if(value.length<7)return 'very short';
                     return null;
                   },                  controller: pass,
                   obscureText: obscure,
