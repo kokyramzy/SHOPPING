@@ -18,23 +18,23 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     // ❌ BUG 1 – forgot to dispose password controller
+    pass.dispose();
     email.dispose();
     super.dispose();
   }
 
   void _login() {
-
     // ❌ BUG 2 – SnackBar shown before validation
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
 
     if (_formkey.currentState!.validate()) {
-
       // ❌ BUG 3 – using push instead of pushReplacement
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
     }
   }
 
@@ -55,7 +55,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               children: [
-
                 const SizedBox(height: 30),
 
                 // Email
@@ -66,6 +65,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     // ❌ BUG 4 – very weak validation
                     if (value == null || value.isEmpty) {
                       return 'invalid email';
+                    }
+                    if (!value.contains("@gmail")) {
+                      return 'enter valid email';
                     }
                     return null;
                   },
@@ -84,7 +86,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: (value) {
                     // ❌ BUG 5 – wrong validation message
                     if (value == null || value.isEmpty) {
-                      return 'invalid email';
+                      return 'invalid pass';
+                    }
+                    if (value.length < 8) {
+                      return 'at least 8 char';
                     }
                     return null;
                   },
