@@ -26,13 +26,14 @@ class _SignupScreenState extends State<SignupScreen> {
   void _signup() {
     if (_formKey.currentState!.validate()) {
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully')),
-      );
+     
 
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+       ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Account created successfully')),
       );
     }
   }
@@ -68,7 +69,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (value == null || value.isEmpty) {
                     return "Email is required";
                   }
-                  
+                  if(!value.contains("@gmail")){
+                      return '@gmail';
+                    }
                   return null;
                 },
               ),
@@ -97,6 +100,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (value == null || value.isEmpty) {
                     return "Password is required";
                   }
+                   if(value.length<6){
+                      return 'at least 6';
+                    }
                   return null;
                 },
               ),

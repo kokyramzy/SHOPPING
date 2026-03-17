@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(12),
             child: Center(
-              child: Text(provider.total.toString()), // 🔴 not formatted
+              child: Text(provider.total.toStringAsFixed(2)), // 🔴 not formatted
             ),
           )
         ],
@@ -42,7 +42,9 @@ class HomeScreen extends StatelessWidget {
             title: p.title,
             price: "${p.price} LE",
             imageUrl: p.imageUrl,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>ProductDetailsScreen(product: p)));
+            },
           );
         },
       ),

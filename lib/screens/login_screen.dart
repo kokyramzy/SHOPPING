@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     // ❌ BUG 1 – forgot to dispose password controller
+    pass.dispose();
     email.dispose();
     super.dispose();
   }
@@ -25,16 +26,17 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() {
 
     // ❌ BUG 2 – SnackBar shown before validation
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
+    
 
     if (_formkey.currentState!.validate()) {
 
       // ❌ BUG 3 – using push instead of pushReplacement
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
+      ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
     }
   }
 
@@ -67,6 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value == null || value.isEmpty) {
                       return 'invalid email';
                     }
+                    if(!value.contains("@gmail")){
+                      return '@gmail';
+                    }
                     return null;
                   },
                   decoration: const InputDecoration(
@@ -84,7 +89,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: (value) {
                     // ❌ BUG 5 – wrong validation message
                     if (value == null || value.isEmpty) {
-                      return 'invalid email';
+                      return 'invalid pass';
+                    }
+                    if(value.length<6){
+                      return 'at least 6';
                     }
                     return null;
                   },
@@ -124,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Text("Don't have an account?  "),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (_) => const SignupScreen(),
