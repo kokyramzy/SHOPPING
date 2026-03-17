@@ -67,7 +67,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (value == null || value.isEmpty) {
                     return "Email is required";
                   }
-
+                  //added validation to check email format
+                        if (!value.contains("@gmail")) {
+                      return '@gmail';
+                    }
                   return null;
                 },
               ),
@@ -95,6 +98,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (value == null || value.isEmpty) {
                     return "Password is required";
                   }
+                  //added validation to check pass length
+                   if (value.length < 6) {
+                      return '<6';
+                    }
                   return null;
                 },
               ),

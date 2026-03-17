@@ -18,23 +18,25 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     // bug 1
+    //added pass.dispose(); to free memory 
+    pass.dispose();
     email.dispose();
     super.dispose();
   }
 
   void _login() {
-
-    // BUG 2 – 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
+    // BUG 2 –
 
     if (_formkey.currentState!.validate()) {
-
-      //  BUG 3 
-      Navigator.push(
+      //  BUG 3
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
+      //moved SnackBar after navigation to show it on home screen
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Logged in (demo)')));
     }
   }
 
@@ -55,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
               children: [
-
                 const SizedBox(height: 30),
 
                 // Email
@@ -63,9 +64,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: email,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    // BUG 4 
+                    // BUG 4
                     if (value == null || value.isEmpty) {
                       return 'invalid email';
+                    }
+                    //check if email is valid
+                    if (!value.contains("@gmail")) {
+                      return '@gmail';
                     }
                     return null;
                   },
@@ -82,9 +87,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: pass,
                   obscureText: obscure,
                   validator: (value) {
-                    // BUG 5 
+                    // BUG 5
                     if (value == null || value.isEmpty) {
-                      return 'invalid email';
+                      return 'invalid pass';
+                    }
+                    //addedvalidation to pass length
+                    if (value.length < 6) {
+                      return '<6';
                     }
                     return null;
                   },

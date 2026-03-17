@@ -1,7 +1,8 @@
 class Product {
   final String id;
   final String title;
-  final String price; //bug 14 
+  //change price fromstring to double for easier calculations
+  final double price; //bug 14 
   final String imageUrl;
   final String description;
 

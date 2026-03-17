@@ -9,7 +9,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final provider = context.watch<ShopProvider>();
 
     return Scaffold(
@@ -20,34 +19,40 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Center(
               // BUG 8
-              child: Text(provider.total.toString()),
+              child: Text(provider.total.toStringAsFixed(2)),
             ),
-          )
+          ),
         ],
       ),
-     body: provider.products.isEmpty
-    ? const Center(child: Text("No Products Available"))
-    : GridView.builder(
-        padding: const EdgeInsets.all(12),
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 3 / 4,
-        ),
-        itemCount: provider.products.length,
-        itemBuilder: (_, i) {
-          final p = provider.products[i];
-          return ProductCard(
-            title: p.title,
-            price: "${p.price} LE",
-            imageUrl: p.imageUrl,
-            // BUG 9
-            onTap: () {},
-          );
-        },
-      ),
+      body: provider.products.isEmpty
+          ? const Center(child: Text("No Products Available"))
+          : GridView.builder(
+              padding: const EdgeInsets.all(12),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 3 / 4,
+              ),
+              itemCount: provider.products.length,
+              itemBuilder: (_, i) {
+                final p = provider.products[i];
+                return ProductCard(
+                  title: p.title,
+                  price: "${p.price} LE",
+                  imageUrl: p.imageUrl,
+                  // BUG 9
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ProductDetailsScreen(product: p),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
     );
   }
 }
